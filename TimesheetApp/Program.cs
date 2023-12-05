@@ -9,61 +9,111 @@
         static void Main(string[] args)
         {
             string w;
-            int i, t, ttl;
-            List<TimeSheetEntry> ents = new List<TimeSheetEntry>();
+            int i, t, total;
+            List<TimeSheetEntry> entries = new List<TimeSheetEntry>();
             Console.Write("Company you worked for: ");
             w = Console.ReadLine();
             Console.Write("How long did you do it for: ");
             t = int.Parse(Console.ReadLine());
-            TimeSheetEntry ent = new TimeSheetEntry();
-            ent.HoursWorked = t;
-            ent.CustomerCompany = w;
-            ents.Add(ent);
-            Console.Write("Do you want to enter more time:");
-            bool cont = bool.Parse(Console.ReadLine());
-            do
+            TimeSheetEntry entry = new TimeSheetEntry();
+            entry.HoursWorked = t;
+            entry.CustomerCompany = w;
+            entries.Add(entry);
+            Console.Write("Do you want to enter more time (yes/no): ");
+
+            string answer = Console.ReadLine();
+
+            bool cont = false;
+
+            if (answer.ToLower() == "yes")
+            {
+                cont = true;
+            }
+
+            //bool cont = bool.Parse(Console.ReadLine());
+            while (cont == true)
             {
                 Console.Write("Company you worked for: ");
                 w = Console.ReadLine();
                 Console.Write("How long did you do it for: ");
                 t = int.Parse(Console.ReadLine());
-                ent = new TimeSheetEntry();
-                ent.HoursWorked = t;
-                ent.CustomerCompany = w;
-                ents.Add(ent);
+                entry = new TimeSheetEntry();
+                entry.HoursWorked = t;
+                entry.CustomerCompany = w;
+                entries.Add(entry);
                 Console.Write("Do you want to enter more time:");
-                cont = bool.Parse(Console.ReadLine());
-            } while (cont == true);
-            ttl = 0;
-            for (i = 0; i < ents.Count; i++)
-            {
-                if (ents[i].CustomerCompany.Contains("ACME"))
+
+                answer = Console.ReadLine();
+
+                cont = false;
+
+                if (answer.ToLower() == "yes")
                 {
-                    ttl += i;
+                    cont = true;
+                }
+                //bool cont = bool.Parse(Console.ReadLine());
+            }
+
+            total = 0;
+
+            foreach (var e in entries)
+            {
+                if (e.CustomerCompany.ToLower().Contains("acme"))
+                {
+                    total += e.HoursWorked;
                 }
             }
+
+            //for (i = 0; i < entries.Count; i++)
+            //{
+            //    if (entries[i].CustomerCompany.ToLower().Contains("acme"))
+            //    {
+            //        total += entries[i].HoursWorked;
+            //    }
+            //}
             Console.WriteLine("Simulating Sending email to ACME");
-            Console.WriteLine("Your bill is $" + ttl * 150 + " for the hours worked.");
-            for (i = 0; i < ents.Count; i++)
+            Console.WriteLine("Your bill is $" + total * 150 + " for the hours worked.");
+
+            total = 0;
+
+            foreach (var e in entries)
             {
-                if (ents[i].CustomerCompany.Contains("ABC"))
+                if (e.CustomerCompany.ToLower().Contains("abc"))
                 {
-                    ttl += i;
+                    total += e.HoursWorked;
                 }
             }
+
+            //for (i = 0; i < entries.Count; i++)
+            //{
+            //    if (entries[i].CustomerCompany.ToLower().Contains("abc"))
+            //    {
+            //        total += entries[i].HoursWorked;
+            //    }
+            //}
             Console.WriteLine("Simulating Sending email to ABC");
-            Console.WriteLine("Your bill is $" + ttl * 125 + " for the hours worked.");
-            for (i = 0; i < ents.Count; i++)
+            Console.WriteLine("Your bill is $" + total * 125 + " for the hours worked.");
+
+            total = 0;
+
+            foreach (var e in entries)
             {
-                ttl += ents[i].HoursWorked;
+                total += e.HoursWorked;
             }
-            if (ttl > 40)
+
+            //for (i = 0; i < entries.Count; i++)
+            //{
+            //    total += entries[i].HoursWorked;
+            //}
+            //if total greater than 40 hours is an overtime
+
+            if (total > 40)
             {
-                Console.WriteLine("You will get paid $" + ttl * 15 + " for your work.");
+                Console.WriteLine("You will get paid $" + ((total - 40) * 15) + (40 * 10) + " for your work.");
             }
             else
             {
-                Console.WriteLine("You will get paid $" + ttl * 10 + " for your time.");
+                Console.WriteLine("You will get paid $" + total * 10 + " for your time.");
             }
             Console.WriteLine();
             Console.Write("Press any key to exit application...");
